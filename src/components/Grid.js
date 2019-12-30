@@ -5,7 +5,7 @@ class Grid extends React.Component {
     constructor(props) {
         super(props);
         var rows = this.initBoxRows();
-        this.state = {boxRows:rows};   
+        this.state = {boxRows:rows, mouseDownLocation:null, mouseUpLocation:null};
     }
     componentDidMount() {
         this.initBoxRows();
@@ -26,6 +26,17 @@ class Grid extends React.Component {
         }
         return rows;
     }
+    onMouseDown = (rowCol) => {
+        console.log(rowCol)
+        this.setState({mouseDownLocation : rowCol});
+    }
+
+    onMouseUp = (rowCol) => {
+        console.log(rowCol)
+        this.setState({mouseUpLocation:rowCol});
+        console.log("mouse clicked down on", this.state.mouseDownLocation);
+        console.log("mouse clicked down up", this.state.mouseUpLocation);
+    }
     renderRows = () => {
         var rows = this.state.boxRows.map((row, rowInd) => {
             var curRow = row.map((col, colInd) =>{
@@ -34,7 +45,10 @@ class Grid extends React.Component {
                       <Box 
                         backgroundColor={col.backgroundColor}
                         rowNumber={col.rowNumber}
-                        colNumber={col.colNumber} />
+                        colNumber={col.colNumber}
+                        mouseDown={this.onMouseDown}
+                        onMouseUp={this.onMouseUp}
+                        />
                     </td>
                 );
             });
@@ -47,14 +61,16 @@ class Grid extends React.Component {
         });
         return rows;
     }
-    onClick() {
-        console.log("clicked grid");
-    }
+    // onClick = () => {
+    //     console.log("mouse clicked down on", this.state.onMouseDown);
+    //     console.log("mouse clicked down up", this.state.onMouseUp);
+    // }
 
     render () {
         return (
             <div key='grid'
-                onClick={this.onClick}> 
+                // onClick={this.onClick}
+                > 
             <table key='table'>
             <tbody key='tbody'>
                 {this.renderRows()}
