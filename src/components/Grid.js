@@ -6,9 +6,11 @@ class Grid extends React.Component {
         super(props);
         var rows = this.initBoxRows();
         this.state = {boxRows:rows, mouseDownLocation:null, mouseUpLocation:null};
+        this.transitionQueue = []
     }
     componentDidMount() {
         this.initBoxRows();
+        this.startTransition();        
     }
     initBoxRows() {
         var rows = []
@@ -31,18 +33,27 @@ class Grid extends React.Component {
     }
 
     paintGreenOrBlue = (start, end) => {
-        // find the lower of the two in rows, then find the higher of the two in rows and start iterating from lower to higher
         console.log("mouse clicked down on", start);
         console.log("mouse clicked down up", end);
         var rows = this.state.boxRows
 
         var i = start.row
-        
+        var changeTo = 'green';
+        if (rows[start.row][start.col].backgroundColor == 'green') {
+            changeTo = 'blue';
+        }
         while(true) {
             var j = start.col;
             while(true) {
-                rows[i][j].backgroundColor = 'green';
-                this.setState({boxRows: rows})
+                
+                this.transitionQueue.push(
+                    {
+                        row: i,
+                        col: j, 
+                        backgroundColor: changeTo
+                    }
+                );
+                // this.setState({boxRows: rows})
                 if (j === end.col) 
                     break
                 else if(j < end.col)
@@ -50,15 +61,34 @@ class Grid extends React.Component {
                 else 
                     j --;
             }
-            if (i == end.row)
+            if (i === end.row)
                 break
             if (i < end.row)
                 i++;
             else 
                 i--;
         }
+
         // console.log("state clicked down", this.state.mouseDownLocation);
         // console.log("state clicked up", this.state.mouseUpLocation);
+        this.startTransition();
+    }
+    doChange = () => {
+        if (this.transitionQueue.length !== 0){ 
+            var rows = this.state.boxRows;
+            var change = this.transitionQueue.shift();
+            console.log("settings state", change)
+            rows[change.row][change.col].backgroundColor =  change.backgroundColor;
+            this.setState({boxRows: rows});
+        }
+        else {
+            clearInterval(this.transitionInterval)
+        }
+    }
+
+    startTransition() {
+        // while (this.transitionQueue.length !== 0){ 
+        this.transitionInterval = setInterval(this.doChange, 50);
     }
 
     onMouseUp = (rowCol) => {
