@@ -1,6 +1,23 @@
-.help {
-    background-color: blue;
-}
 .delay-help {
-    background-color: black;
+    width: 160px;
+    height: 200px;
+    background-color: '#DBE4EE';
+    position: relative;
+    right: 100px;
+    top: 100px;
+    background-color: burlywood;
+}
+
+
+#question-mark {
+    margin: 10px;
+}
+
+.help {
+    background-color: #BFC0C0;
+}
+
+label.label-delay {
+    margin-right: 10px;
+    margin-left:10px;
 }

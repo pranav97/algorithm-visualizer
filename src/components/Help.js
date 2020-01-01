@@ -1,23 +1,25 @@
 import React from 'react';
+import './Help.css';
 class Help extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { showTip: false }
-    }
+  constructor(props) {
+    super(props);
+    this.state = { showTip: false }
+  }
 
-    showTip = ()  => {
-      console.log("showing now");
-      this.setState({
-        showTip : true
-      });
-    }
+  showTip = ()  => {
+    console.log("showing now");
+    this.setState({
+      showTip : true
+    });
+  }
 
-    hideTip = () =>  {
-      console.log(" not showing now");
-      this.setState({
-        showTip : false
-      });
-    }
+  hideTip = () =>  {
+    console.log(" not showing now");
+    this.setState({
+      showTip : false
+    });
+  }
+  
   tooltopStyle = () => {
       var ret = 'hidden';
       if (this.state.showTip)
@@ -29,13 +31,15 @@ class Help extends React.Component {
     return  (
       <div className="help" key="delay-help"
           onMouseOver={this.showTip} 
-          onMouseOut={this.hideTip} 
-      >
-        <i 
-          className="question circle icon"
-        >
+          onMouseOut={this.hideTip} >
+        <i key = "question-mark"
+          className="question circle icon" >
         </i>
-        <div className="delay-help" style={{visibility: this.tooltopStyle()}}>this is the tooltip!!</div>
+        <div className="delay-help" style={{visibility: this.tooltopStyle()}}>
+          <p>
+          Move the slider to the right to get slower animations. 
+          </p>
+        </div>
       </div>
     );
   }

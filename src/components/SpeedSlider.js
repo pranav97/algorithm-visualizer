@@ -1,6 +1,6 @@
 import React from 'react';
 import Help from './Help';
-
+import './SpeedSlider.css';
 
 class SpeedSlider extends React.Component {
     constructor(props) {
@@ -18,8 +18,7 @@ class SpeedSlider extends React.Component {
     render() {
         return (
             <div className='speed-slider'>
-                <label>Delay: 0ms</label>
-
+                <label className="label-delay">Delay: 0ms  </label>
                 <input
                     className='speed-input'
                     onChange={this.handleChange} 
@@ -29,7 +28,7 @@ class SpeedSlider extends React.Component {
                     defaultValue = {this.state.value}
                     step="1"
                 />
-                <label>500ms</label>
+                <label className="label-delay">  500ms</label>
                 <Help/>
             </div>
         );

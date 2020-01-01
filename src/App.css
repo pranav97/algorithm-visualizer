@@ -19,14 +19,3 @@ html {
 .viz {
   background-color: black;
 }
-.controls {
-  width: 445px;
-  height: 445px;
-  background-color: #DAE2DF;
-}
-.speed-slider {
-    width: 260px;
-    height: 40px;
-    padding: 20px;
-    background-color: white;
-}
