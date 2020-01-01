@@ -1,13 +1,41 @@
 import React from 'react';
 import Grid from './components/Grid';
+import SpeedSlider from './components/SpeedSlider';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <Grid/>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      speed: 3,
+      showTip: false
+    }
+  }
+  updateSpeed = (val) => {
+    this.setState({
+      speed: val
+    });
+  }
+
+
+  render() {
+    return (
+      <div className="App">
+        <h1 className='header'>Algorithm Visualizer</h1>
+        <div className="container">
+          <div className="viz">
+            <Grid maxRow="30" maxCol="20" speed={this.state.speed}/>
+          </div>
+          <nav className='controls'>
+            <SpeedSlider defaultValue={this.state.speed} updateSpeed={this.updateSpeed}/>
+          </nav>
+          
+        </div>
+      </div>
+    );
+  }
+  
 }
 
 export default App;
+

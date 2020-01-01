@@ -14,9 +14,9 @@ class Grid extends React.Component {
     }
     initBoxRows() {
         var rows = []
-        for (var j = 0; j < 10; j++) { 
+        for (var j = 0; j < this.props.maxRow; j++) { 
             var cols = []
-            for(var i = 0; i < 10; i++) {
+            for(var i = 0; i < this.props.maxCol; i++) {
                 cols.push({
                     backgroundColor: 'blue',
                     rowNumber: j,
@@ -32,20 +32,26 @@ class Grid extends React.Component {
         this.setState({mouseDownLocation : rowCol});
     }
 
+    onMouseUp = (rowCol) => {
+        this.setState({mouseUpLocation:rowCol});
+        // set state is async so we are also passing the data coming into this 
+        // function onto painGreenOrBlue
+        this.paintGreenOrBlue(this.state.mouseDownLocation, rowCol);
+    }
+
     paintGreenOrBlue = (start, end) => {
         console.log("mouse clicked down on", start);
         console.log("mouse clicked down up", end);
-        var rows = this.state.boxRows
+        var rows = this.state.boxRows;
 
         var i = start.row
         var changeTo = 'green';
-        if (rows[start.row][start.col].backgroundColor == 'green') {
+        if (rows[start.row][start.col].backgroundColor === 'green') {
             changeTo = 'blue';
         }
         while(true) {
             var j = start.col;
             while(true) {
-                
                 this.transitionQueue.push(
                     {
                         row: i,
@@ -53,7 +59,6 @@ class Grid extends React.Component {
                         backgroundColor: changeTo
                     }
                 );
-                // this.setState({boxRows: rows})
                 if (j === end.col) 
                     break
                 else if(j < end.col)
@@ -68,16 +73,26 @@ class Grid extends React.Component {
             else 
                 i--;
         }
-
-        // console.log("state clicked down", this.state.mouseDownLocation);
-        // console.log("state clicked up", this.state.mouseUpLocation);
         this.startTransition();
     }
+
+    startTransition = () => {
+        clearInterval(this.transitionInterval);
+        this.transitionInterval = setInterval(this.doChange, (this.props.speed * 100));
+        this.setState({
+            currentSpeed : this.props.speed
+        })
+    }
+  
     doChange = () => {
+        console.log(this.state.currentSpeed);
+        if (this.props.speed !== this.state.currentSpeed) {
+          this.startTransition();
+          return;
+        }
         if (this.transitionQueue.length !== 0){ 
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
-            console.log("settings state", change)
             rows[change.row][change.col].backgroundColor =  change.backgroundColor;
             this.setState({boxRows: rows});
         }
@@ -86,16 +101,7 @@ class Grid extends React.Component {
         }
     }
 
-    startTransition() {
-        // while (this.transitionQueue.length !== 0){ 
-        this.transitionInterval = setInterval(this.doChange, 50);
-    }
 
-    onMouseUp = (rowCol) => {
-        this.setState({mouseUpLocation:rowCol});
-        // set state is async so we are also passing the data coming into this function onto painGreenOrBlue
-        this.paintGreenOrBlue(this.state.mouseDownLocation, rowCol);
-    }
     renderRows = () => {
         var rows = this.state.boxRows.map((row, rowInd) => {
             var curRow = row.map((col, colInd) =>{
@@ -120,15 +126,9 @@ class Grid extends React.Component {
         });
         return rows;
     }
-    // onClick = () => {
-    //     console.log("mouse clicked down on", this.state.onMouseDown);
-    //     console.log("mouse clicked down up", this.state.onMouseUp);
-    // }
-
     render () {
         return (
             <div key='grid'
-                // onClick={this.onClick}
                 > 
             <table key='table'>
             <tbody key='tbody'>

@@ -3,13 +3,9 @@ import './Box.css';
 
 class Box extends React.Component {
     colorHashes = {
-        'blue': "#007EA7",
-        'green': "#21897E"
+        'blue': "#A2BCE0",
+        'green': "#0B5563"
     }
-    // onClick() {
-    //     // must be arrow function to get the thing to work as expected with click
-    //     // console.log("clicked box");
-    // }
     onMouseDown = () => {
         this.props.mouseDown(
             {
