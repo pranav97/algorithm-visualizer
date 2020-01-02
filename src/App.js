@@ -12,6 +12,7 @@ class App extends React.Component {
       sidebarOpen: false,
       height: window.innerHeight, 
       width: window.innerWidth,
+      method: "DFS"
     };
     this.updateDimensions = this.updateDimensions.bind(this);
   }
@@ -74,9 +75,10 @@ class App extends React.Component {
     this.setState({sidebarOpen: false});
   }
 
-
   methodChanged = (method) => {
-    console.log(method);
+    this.setState({
+      method: method
+    });
   }
 
   render() {
@@ -117,6 +119,7 @@ class App extends React.Component {
         <div className="dimmed pusher">
           <div className="viz">
           <Grid 
+              method={this.state.method}
               maxRow="30" 
               maxCol="20" 
               speed={this.state.speed}/>

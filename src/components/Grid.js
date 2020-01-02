@@ -169,6 +169,31 @@ class Grid extends React.Component {
         }
     }
 
+    dfsHelper(grid, neighbor) {
+        if ( neighbor != null && grid[neighbor[0]][neighbor[1]].backgroundColor === "green") {
+            console.log(neighbor[0], neighbor[1]);
+            grid[neighbor[0]][neighbor[1]].backgroundColor = this.colorCodes.seen;
+            this.transitionQueue.push({
+                row: neighbor[0],
+                col: neighbor[1], 
+                backgroundColor: this.colorCodes.seen
+            })
+            this.dfs(grid, neighbor[0], neighbor[1]);
+        }
+    }
+
+    dfs(grid, startRow, startCol) {
+        var r = islands.right(grid, [startRow, startCol]);
+        var l = islands.left(grid, [startRow, startCol])
+        var u = islands.up(grid, [startRow, startCol]);
+        var d = islands.down(grid, [startRow, startCol]); 
+        console.log(r, l, u, d);
+        this.dfsHelper(grid, r);
+        this.dfsHelper(grid, l);
+        this.dfsHelper(grid, u);
+        this.dfsHelper(grid, d);
+    }
+
     numIslands = () => {
         // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
         var countNumIslands = 0;
@@ -176,9 +201,14 @@ class Grid extends React.Component {
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) {
                 if (grid[i][j].backgroundColor === "green") {
-
-                    this.bfs(grid, i, j);
-                    countNumIslands++;
+                    if (this.props.method === "BFS") {
+                        this.bfs(grid, i, j);
+                        countNumIslands++;  
+                    }
+                    else if (this.props.method === "DFS") {
+                        this.dfs(grid, i, j);
+                        countNumIslands++;  
+                    }
                 }
                 else {
                     this.transitionQueue.push(
