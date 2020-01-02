@@ -74,6 +74,11 @@ class App extends React.Component {
     this.setState({sidebarOpen: false});
   }
 
+
+  methodChanged = (method) => {
+    console.log(method);
+  }
+
   render() {
     return (
       <div className="App">
@@ -106,6 +111,7 @@ class App extends React.Component {
             defaultValue={this.state.speed} 
             updateSpeed={this.updateSpeed} />
           <Drop 
+            methodChanged={this.methodChanged}
           />
         </div>
         <div className="dimmed pusher">
