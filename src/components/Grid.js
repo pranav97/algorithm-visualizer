@@ -42,16 +42,16 @@ class Grid extends React.Component {
 
     onMouseUp = (rowCol) => {
         this.setState({mouseUpLocation:rowCol});
+        if (!this.state.mouseDownLocation) {
+            return;
+        }
         // set state is async so we are also passing the data coming into this 
         // function onto painGreenOrBlue
         this.paintGreenOrBlue(this.state.mouseDownLocation, rowCol);
     }
 
     paintGreenOrBlue = (start, end) => {
-        // console.log("mouse clicked down on", start);
-        // console.log("mouse clicked down up", end);
         var rows = this.state.boxRows;
-
         var i = start.row
         var changeTo = 'green';
         if (rows[start.row][start.col].backgroundColor === 'green') {
@@ -147,6 +147,7 @@ class Grid extends React.Component {
             queue = this.checkLand(grid, d, queue);
         }
     }
+
     numIslands = () => {
         // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
         var countNumIslands = 0;
@@ -187,9 +188,6 @@ class Grid extends React.Component {
         this.numIslands();
     }
 
-
-
-
     renderRows = () => {
         var rows = this.state.boxRows.map((row, rowInd) => {
             var curRow = row.map((col, colInd) =>{
@@ -216,6 +214,7 @@ class Grid extends React.Component {
     }
 
 
+
     render () {
         return (
         <div key='grid' > 
@@ -224,7 +223,7 @@ class Grid extends React.Component {
                 {this.renderRows()}
             </tbody>
             </table>
-            <PlayButton onPlayPause = {this.onPlayPause} icon="play" labelText="Start"/>        
+            <PlayButton onPlayPause = {this.onPlayPause} visible={this.state.goTime} icon="play" labelText="Start"/>        
         </div>
         );
 

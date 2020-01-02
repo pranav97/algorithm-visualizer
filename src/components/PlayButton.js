@@ -11,13 +11,21 @@ class PlayButton extends React.Component {
     onClick = () => {
         this.props.onPlayPause();
     }
+
+    getStyle = () => {
+        var style = "visible";
+        if (this.props.visible === true) {
+            style = "hidden"
+        };
+        return style;
+    }
+
     render () {
         return (
-            <div className='play-button'>
+            <div className='play-button' style={{ visibility: this.getStyle()}}>
                 <button className="ui labeled icon button">
                     <i 
-                        onClick={this.onClick
-                    }
+                        onClick={this.onClick}
                         className={this.getIconState()}></i>
                     {this.startStop()}
                 </button>
