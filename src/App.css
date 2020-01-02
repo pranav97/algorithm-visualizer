@@ -17,11 +17,31 @@ html {
 }
 
 .viz {
-  background-color: black;
+  background-color: #797B84;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 20px;
 }
 
 .controls {
   width: 350px;
   height: 445px;
-  background-color: #DAE2DF;
+  background-color: #D3D5D7;
+}
+
+.ui.right.wide.sidebar.overlay.visible {
+  background-color: #D3D5D7;
+}
+
+.ui.attached.menu:not(.tabular) {
+  border: 1px solid #d4d4d5;
+  background-color: #D3D5D7;
+}
+
+.item {
+  margin: 10px;
+}
+#chevron {
+  margin-top: 50px;
+
 }

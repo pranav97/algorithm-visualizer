@@ -3,10 +3,8 @@
     height: 60px;
     padding: 10px;
     border-right: 10px;
-    background-color: #BFC0C0;
+    background-color: #DEE5E5;
     display: flex;
+    margin-top: 100px;
     flex-direction: row;
 }
-
-
-
