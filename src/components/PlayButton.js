@@ -9,7 +9,7 @@ class PlayButton extends React.Component {
         return this.props.labelText;
     }
     onClick = () => {
-        this.props.onPlayPause();
+        this.props.onClick();
     }
 
     getStyle = () => {
@@ -22,10 +22,12 @@ class PlayButton extends React.Component {
 
     render () {
         return (
-            <div className='play-button' style={{ visibility: this.getStyle()}}>
+            <div 
+                onClick={this.onClick}
+
+                className='play-button' style={{ visibility: this.getStyle()}}>
                 <button className="ui labeled icon button">
                     <i 
-                        onClick={this.onClick}
                         className={this.getIconState()}></i>
                     {this.startStop()}
                 </button>

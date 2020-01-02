@@ -2,6 +2,7 @@ import React from 'react';
 import Box from './Box';
 import PlayButton from './PlayButton';
 import * as islands from './numIslandsComponent.js';
+// import ResetButton from './ResetButton';
 
 class Grid extends React.Component {
     constructor(props) {
@@ -9,7 +10,11 @@ class Grid extends React.Component {
         var rows = this.initBoxRows();
         this.state = {
             goTime:false, 
-            boxRows:rows, mouseDownLocation:null, mouseUpLocation:null};
+            boxRows:rows, 
+            mouseDownLocation:null, 
+            mouseUpLocation:null,
+            resetState: rows 
+        };
         this.transitionQueue = [];
         this.colorCodes = {
             'visited': 'red',
@@ -85,6 +90,7 @@ class Grid extends React.Component {
     }
 
     startTransition = () => {
+        this.setState({goTime: true, resetState: this.state.boxRows})
         clearInterval(this.transitionInterval);
         this.transitionInterval = setInterval(this.doChange, (this.props.speed * 100));
         this.setState({
@@ -99,6 +105,7 @@ class Grid extends React.Component {
           return;
         }
         if (this.transitionQueue.length !== 0){ 
+            this.setState({goTime: true});
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
             // console.log(change);
@@ -106,7 +113,9 @@ class Grid extends React.Component {
             this.setState({boxRows: rows});
         }
         else {
-            clearInterval(this.transitionInterval)
+
+            this.setState({goTime: false});
+            clearInterval(this.transitionInterval);
         }
     }
 
@@ -213,7 +222,9 @@ class Grid extends React.Component {
         return rows;
     }
 
-
+    onReset = () => {
+        console.log("reseet button pressed");
+    }
 
     render () {
         return (
@@ -223,7 +234,17 @@ class Grid extends React.Component {
                 {this.renderRows()}
             </tbody>
             </table>
-            <PlayButton onPlayPause = {this.onPlayPause} visible={this.state.goTime} icon="play" labelText="Start"/>        
+            <PlayButton 
+                onClick = {this.onPlayPause} 
+                visible={this.state.goTime} 
+                icon="play" 
+                labelText="Start"/>        
+            <PlayButton 
+                icon="undo alternate"
+                labelText="Restart"
+                onClick = {this.onReset}
+                visible={!this.state.goTime}
+            />
         </div>
         );
 
