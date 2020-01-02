@@ -9,12 +9,12 @@ class Grid extends React.Component {
         super(props);
         var rows = this.initBoxRows();
         this.state = {
-            goTime:false, 
+            animating:false, 
             boxRows:rows, 
             mouseDownLocation:null, 
-            mouseUpLocation:null,
-            resetState: rows 
+            mouseUpLocation:null
         };
+        this.resetState = this.copy(rows);
         this.transitionQueue = [];
         this.colorCodes = {
             'visited': 'red',
@@ -89,9 +89,22 @@ class Grid extends React.Component {
         this.startTransition();
     }
 
+    copy = (inp_array) => {
+        var ret = []
+        for (var i = 0; i < inp_array.length; i++)  {
+            ret[i] = [];
+            for (var j = 0; j < inp_array[i].length; j++) {
+                var clonedObj = { ...inp_array[i][j]}
+                ret[i].push(clonedObj);
+            }
+        }
+        return ret;
+    }
+    
     startTransition = () => {
-        this.setState({goTime: true, resetState: this.state.boxRows})
         clearInterval(this.transitionInterval);
+        this.setState({animating: true});
+        this.resetState = this.copy(this.state.boxRows);
         this.transitionInterval = setInterval(this.doChange, (this.props.speed * 100));
         this.setState({
             currentSpeed : this.props.speed
@@ -105,7 +118,7 @@ class Grid extends React.Component {
           return;
         }
         if (this.transitionQueue.length !== 0){ 
-            this.setState({goTime: true});
+            this.setState({animating: true});
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
             // console.log(change);
@@ -113,8 +126,7 @@ class Grid extends React.Component {
             this.setState({boxRows: rows});
         }
         else {
-
-            this.setState({goTime: false});
+            this.setState({animating: false});
             clearInterval(this.transitionInterval);
         }
     }
@@ -192,7 +204,7 @@ class Grid extends React.Component {
 
     onPlayPause = () => {
         this.setState({
-          goTime: true
+          animating: true
         })
         this.numIslands();
     }
@@ -223,7 +235,11 @@ class Grid extends React.Component {
     }
 
     onReset = () => {
-        console.log("reseet button pressed");
+        this.transitionQueue = []
+        console.log(this.resetState);
+        this.setState({animating: false});
+        clearInterval(this.transitionInterval);
+        this.setState({boxRows:  this.resetState});
     }
 
     render () {
@@ -236,14 +252,14 @@ class Grid extends React.Component {
             </table>
             <PlayButton 
                 onClick = {this.onPlayPause} 
-                visible={this.state.goTime} 
+                visible={this.state.animating} 
                 icon="play" 
                 labelText="Start"/>        
             <PlayButton 
                 icon="undo alternate"
                 labelText="Restart"
                 onClick = {this.onReset}
-                visible={!this.state.goTime}
+                visible={!this.state.animating}
             />
         </div>
         );
