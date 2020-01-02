@@ -2,16 +2,16 @@ import React from 'react';
 import Grid from './components/Grid';
 import SpeedSlider from './components/SpeedSlider';
 import './App.css';
+import Drop from './components/Drop';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      boxRows: null,
-      speed: 3,
+      speed: 1,
       sidebarOpen: false,
       height: window.innerHeight, 
-      width: window.innerWidth
+      width: window.innerWidth,
     };
     this.updateDimensions = this.updateDimensions.bind(this);
   }
@@ -47,14 +47,6 @@ class App extends React.Component {
     return ret;
   }
 
-  // getCloseIconVisibility() {
-  //   var ret = "visible";
-  //   if (this.state.width > 700 ) {
-  //     ret = "hidden";
-  //   }
-  //   return ret;
-  // }
-
   getSidebarClass() {
     var ret = "ui right wide sidebar overlay";
     if (this.state.width > 700 ) {
@@ -67,6 +59,7 @@ class App extends React.Component {
     }
     return ret;
   }
+
   onClick = () => {
     console.log("clicked");
     if (this.state.sidebarOpen === true) {
@@ -102,16 +95,18 @@ class App extends React.Component {
           </div>
         </div>
         <div className={this.getSidebarClass()}>
-          <div 
-            className="item"
+          <div
+            className="item chevron"
             onClick={this.hideSidebar}
-            style={{marginTop: '30px'}}
+            // style={{marginTop: '30px'}}
           >
             <i className="chevron right icon"></i>
           </div>
           <SpeedSlider
             defaultValue={this.state.speed} 
             updateSpeed={this.updateSpeed} />
+          <Drop 
+          />
         </div>
         <div className="dimmed pusher">
           <div className="viz">
