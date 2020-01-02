@@ -7,14 +7,12 @@ class Help extends React.Component {
   }
 
   showTip = ()  => {
-    console.log("showing now");
     this.setState({
       showTip : true
     });
   }
 
   hideTip = () =>  {
-    console.log(" not showing now");
     this.setState({
       showTip : false
     });

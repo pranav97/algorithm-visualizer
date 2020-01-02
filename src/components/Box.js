@@ -4,7 +4,9 @@ import './Box.css';
 class Box extends React.Component {
     colorHashes = {
         'blue': "#A2BCE0",
-        'green': "#0B5563"
+        'green': "#0B5563",
+        'red': '#993955',
+        'white': "#E9ECF5"
     }
     onMouseDown = () => {
         this.props.mouseDown(

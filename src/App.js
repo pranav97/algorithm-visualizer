@@ -7,8 +7,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      speed: 3,
-      showTip: false
+      boxRows: null,
+      speed: 3
     }
   }
   updateSpeed = (val) => {
@@ -16,6 +16,7 @@ class App extends React.Component {
       speed: val
     });
   }
+
 
 
   render() {

@@ -1,12 +1,20 @@
 import React from 'react';
 import Box from './Box';
+import PlayButton from './PlayButton';
+import * as islands from './numIslandsComponent.js';
 
 class Grid extends React.Component {
     constructor(props) {
         super(props);
         var rows = this.initBoxRows();
-        this.state = {boxRows:rows, mouseDownLocation:null, mouseUpLocation:null};
-        this.transitionQueue = []
+        this.state = {
+            goTime:false, 
+            boxRows:rows, mouseDownLocation:null, mouseUpLocation:null};
+        this.transitionQueue = [];
+        this.colorCodes = {
+            'visited': 'red',
+            'seen': 'white'
+        }
     }
     componentDidMount() {
         this.initBoxRows();
@@ -40,8 +48,8 @@ class Grid extends React.Component {
     }
 
     paintGreenOrBlue = (start, end) => {
-        console.log("mouse clicked down on", start);
-        console.log("mouse clicked down up", end);
+        // console.log("mouse clicked down on", start);
+        // console.log("mouse clicked down up", end);
         var rows = this.state.boxRows;
 
         var i = start.row
@@ -85,7 +93,7 @@ class Grid extends React.Component {
     }
   
     doChange = () => {
-        console.log(this.state.currentSpeed);
+        // console.log(this.state.currentSpeed);
         if (this.props.speed !== this.state.currentSpeed) {
           this.startTransition();
           return;
@@ -93,6 +101,7 @@ class Grid extends React.Component {
         if (this.transitionQueue.length !== 0){ 
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
+            // console.log(change);
             rows[change.row][change.col].backgroundColor =  change.backgroundColor;
             this.setState({boxRows: rows});
         }
@@ -100,6 +109,85 @@ class Grid extends React.Component {
             clearInterval(this.transitionInterval)
         }
     }
+
+    // these functions are going to actually solve the problem
+
+    checkLand(grid, neighbor, bfs_queue) {
+        if ( neighbor != null && grid[neighbor[0]][neighbor[1]].backgroundColor === "green") {
+            grid[neighbor[0]][neighbor[1]].backgroundColor = this.colorCodes.seen;
+            bfs_queue.push(neighbor);            
+        }
+        return bfs_queue;
+    }
+
+    bfs(grid, startRow, startCol){
+        // bfs = (grid, startRow, startCol) => {
+        var queue = [[startRow,startCol]]
+        
+        while (queue.length > 0) {
+
+            // console.log("queue", queue);
+            var cur = queue.shift();
+
+            this.transitionQueue.push(
+                {
+                    row: cur[0],
+                    col: cur[1], 
+                    backgroundColor: this.colorCodes.seen
+                }
+            );
+            var r = islands.right(grid, cur);
+            var l = islands.left(grid, cur)
+            var u = islands.up(grid, cur);
+            var d = islands.down(grid, cur);
+            
+            queue = this.checkLand(grid, r, queue);
+            queue = this.checkLand(grid, l, queue);
+            queue = this.checkLand(grid, u, queue);
+            queue = this.checkLand(grid, d, queue);
+        }
+    }
+    numIslands = () => {
+        // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
+        var countNumIslands = 0;
+        var grid = this.state.boxRows;
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) {
+                if (grid[i][j].backgroundColor === "green") {
+
+                    this.bfs(grid, i, j);
+                    countNumIslands++;
+                }
+                else {
+                    this.transitionQueue.push(
+                        {
+                            row: i,
+                            col: j, 
+                            backgroundColor: this.colorCodes.visited
+                        }
+                    );
+                }
+            }
+        }
+        for(i = 0; i < grid.length; i++) {
+            for(j = 0; j < grid[i].length; j++) { 
+                if (grid[i][j].backgroundColor === this.colorCodes.seen) {
+                    grid[i][j].backgroundColor = "green";
+                }
+            }
+        }
+        this.startTransition();
+        return countNumIslands;
+    }
+
+    onPlayPause = () => {
+        this.setState({
+          goTime: true
+        })
+        this.numIslands();
+    }
+
+
 
 
     renderRows = () => {
@@ -126,16 +214,18 @@ class Grid extends React.Component {
         });
         return rows;
     }
+
+
     render () {
         return (
-            <div key='grid'
-                > 
+        <div key='grid' > 
             <table key='table'>
             <tbody key='tbody'>
                 {this.renderRows()}
             </tbody>
             </table>
-            </div>
+            <PlayButton onPlayPause = {this.onPlayPause} icon="play" labelText="Start"/>        
+        </div>
         );
 
     }
