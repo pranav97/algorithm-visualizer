@@ -11,12 +11,13 @@
 
 #question-mark {
     margin: 10px;
+    box-sizing: border-box;
+    padding: 20px;
 }
 
 .help {
-    background-color: #BFC0C0;
+    width: 30px;
 }
-
 label.label-delay {
     margin-right: 10px;
     margin-left:10px;

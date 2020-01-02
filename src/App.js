@@ -2,6 +2,7 @@ import React from 'react';
 import Grid from './components/Grid';
 import SpeedSlider from './components/SpeedSlider';
 import './App.css';
+import Navbar from 'react-bootstrap/Navbar';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,7 +23,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1 className='header'>Algorithm Visualizer</h1>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand 
+            // href="#home"
+          >
+            Algorithm Visualizer
+          </Navbar.Brand>
+        </Navbar>
         <div className="container">
           <div className="viz">
             <Grid maxRow="30" maxCol="20" speed={this.state.speed}/>
@@ -30,7 +37,6 @@ class App extends React.Component {
           <nav className='controls'>
             <SpeedSlider defaultValue={this.state.speed} updateSpeed={this.updateSpeed}/>
           </nav>
-          
         </div>
       </div>
     );

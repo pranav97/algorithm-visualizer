@@ -19,3 +19,9 @@ html {
 .viz {
   background-color: black;
 }
+
+.controls {
+  width: 350px;
+  height: 445px;
+  background-color: #DAE2DF;
+}
