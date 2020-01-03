@@ -193,22 +193,25 @@ class Grid extends React.Component {
         this.dfsHelper(grid, u);
         this.dfsHelper(grid, d);
     }
-
-    numIslands = () => {
+    revertSeenNodesToGreen(grid) {
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) { 
+                if (grid[i][j].backgroundColor === this.colorCodes.seen) {
+                    grid[i][j].backgroundColor = "green";
+                }
+            }
+        }
+    }
+    
+    numIslandsBFS = () => {
         // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
         var countNumIslands = 0;
         var grid = this.state.boxRows;
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) {
                 if (grid[i][j].backgroundColor === "green") {
-                    if (this.props.method === "BFS") {
-                        this.bfs(grid, i, j);
-                        countNumIslands++;  
-                    }
-                    else if (this.props.method === "DFS") {
-                        this.dfs(grid, i, j);
-                        countNumIslands++;  
-                    }
+                    this.bfs(grid, i, j);
+                    countNumIslands++;  
                 }
                 else {
                     this.transitionQueue.push(
@@ -221,13 +224,33 @@ class Grid extends React.Component {
                 }
             }
         }
-        for(i = 0; i < grid.length; i++) {
-            for(j = 0; j < grid[i].length; j++) { 
-                if (grid[i][j].backgroundColor === this.colorCodes.seen) {
-                    grid[i][j].backgroundColor = "green";
+        this.revertSeenNodesToGreen(grid);
+        this.startTransition();
+        return countNumIslands;
+    }
+
+    numIslandsDFS() {
+        var countNumIslands = 0;
+        var grid = this.state.boxRows;
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) {
+                if (grid[i][j].backgroundColor === "green") {
+                    this.dfs(grid, i, j);
+                    countNumIslands++; 
                 }
+                else {
+                    this.transitionQueue.push(
+                        {
+                            row: i,
+                            col: j, 
+                            backgroundColor: this.colorCodes.visited
+                        }
+                    );
+                }
+     
             }
         }
+        this.revertSeenNodesToGreen(grid);
         this.startTransition();
         return countNumIslands;
     }
@@ -236,7 +259,15 @@ class Grid extends React.Component {
         this.setState({
           animating: true
         })
-        this.numIslands();
+        if (this.props.method === "DFS") {
+            this.numIslandsDFS();
+        }
+        else if (this.props.method === "BFS") {
+            this.numIslandsBFS();
+        }
+        // else if (this.props.method === "Union Find") {
+        //     this.numIslandsUnionFind();
+        // }
     }
 
     renderRows = () => {
