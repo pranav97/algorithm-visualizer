@@ -343,17 +343,17 @@ class Grid extends React.Component {
             </table>
             <PlayButton 
                 onClick = {this.onPlayPause} 
-                visible={this.state.animating} 
+                visible={this.getVisibilityResetButton} 
                 icon="play" 
                 labelText="Start"/>        
             <PlayButton 
                 icon="undo alternate"
                 labelText="Restart"
                 onClick = {this.onReset}
-                visible={!this.state.animating}
+                visible={this.getVisibilityResetButton}
             />
             <div className='component-count'>
-                <h2>Component Count = {this.state.componentCount}</h2>
+                <h2>Island Count = {this.state.componentCount}</h2>
             </div>
         </div>
         );
