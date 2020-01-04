@@ -297,6 +297,15 @@ class Grid extends React.Component {
                         uf.unify(i, j, d[0], d[1]);
                     }
                 }
+                else {
+                    uf.addToTransitionQueue(
+                        {
+                            row: i,
+                            col: j, 
+                            backgroundColor: this.colorCodes.visited
+                        }
+                    );
+                }
             }
         }
         this.revertSeenNodesToGreen(grid);

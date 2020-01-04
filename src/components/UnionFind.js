@@ -116,6 +116,9 @@ class UnionFind {
     count() {
         return this.numComp;
     }
+    addToTransitionQueue(obj) {
+        this.transitionQueue.push(obj);
+    }
     
 }
 export default UnionFind;
