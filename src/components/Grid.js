@@ -3,29 +3,37 @@ import Box from './Box';
 import PlayButton from './PlayButton';
 import * as islands from './numIslandsComponent.js';
 // import ResetButton from './ResetButton';
+import './Grid.css';
 
 class Grid extends React.Component {
     constructor(props) {
         super(props);
-        var rows = this.initBoxRows();
-        this.state = {
-            animating:false, 
-            boxRows:rows, 
-            mouseDownLocation:null, 
-            mouseUpLocation:null
-        };
-        this.resetState = this.copy(rows);
-        this.transitionQueue = [];
+
         this.colorCodes = {
             'visited': 'red',
             'seen': 'white'
         }
+
+        var rows = this.initBoxRows();
+        this.state = {
+            boxRows: rows,
+            animating:false, 
+            mouseDownLocation:null, 
+            mouseUpLocation:null,
+            resetOnRestart: false,
+            componentCount: 0
+        };
+        
+
+        this.resetState = this.copy(rows);
+        this.transitionQueue = [];
+        
     }
     componentDidMount() {
-        this.initBoxRows();
+        // this.initBoxRows();
         this.startTransition();        
     }
-    initBoxRows() {
+    initBoxRows = () => {
         var rows = []
         for (var j = 0; j < this.props.maxRow; j++) { 
             var cols = []
@@ -121,11 +129,17 @@ class Grid extends React.Component {
             this.setState({animating: true});
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
-            // console.log(change);
-            rows[change.row][change.col].backgroundColor =  change.backgroundColor;
-            this.setState({boxRows: rows});
+            if ('count' in change) {
+                this.setState({componentCount: this.state.componentCount + 1});
+            }
+            else {
+                rows[change.row][change.col].backgroundColor =  change.backgroundColor;
+                this.setState({boxRows: rows});
+            }
+            
         }
         else {
+            this.setState({resetOnRestart : true});
             this.setState({animating: false});
             clearInterval(this.transitionInterval);
         }
@@ -171,7 +185,7 @@ class Grid extends React.Component {
 
     dfsHelper(grid, neighbor) {
         if ( neighbor != null && grid[neighbor[0]][neighbor[1]].backgroundColor === "green") {
-            console.log(neighbor[0], neighbor[1]);
+            // console.log(neighbor[0], neighbor[1]);
             grid[neighbor[0]][neighbor[1]].backgroundColor = this.colorCodes.seen;
             this.transitionQueue.push({
                 row: neighbor[0],
@@ -187,12 +201,12 @@ class Grid extends React.Component {
         var l = islands.left(grid, [startRow, startCol])
         var u = islands.up(grid, [startRow, startCol]);
         var d = islands.down(grid, [startRow, startCol]); 
-        console.log(r, l, u, d);
         this.dfsHelper(grid, r);
         this.dfsHelper(grid, l);
         this.dfsHelper(grid, u);
         this.dfsHelper(grid, d);
     }
+
     revertSeenNodesToGreen(grid) {
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) { 
@@ -205,13 +219,13 @@ class Grid extends React.Component {
     
     numIslandsBFS = () => {
         // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
-        var countNumIslands = 0;
+        this.setState({componentCount: 0});
         var grid = this.state.boxRows;
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) {
                 if (grid[i][j].backgroundColor === "green") {
                     this.bfs(grid, i, j);
-                    countNumIslands++;  
+                    this.transitionQueue.push({count: 1});
                 }
                 else {
                     this.transitionQueue.push(
@@ -226,17 +240,16 @@ class Grid extends React.Component {
         }
         this.revertSeenNodesToGreen(grid);
         this.startTransition();
-        return countNumIslands;
     }
 
     numIslandsDFS() {
-        var countNumIslands = 0;
+        this.setState({componentCount: 0});
         var grid = this.state.boxRows;
         for(var i = 0; i < grid.length; i++) {
             for(var j = 0; j < grid[i].length; j++) {
                 if (grid[i][j].backgroundColor === "green") {
                     this.dfs(grid, i, j);
-                    countNumIslands++; 
+                    this.transitionQueue.push({count: 1});
                 }
                 else {
                     this.transitionQueue.push(
@@ -252,12 +265,12 @@ class Grid extends React.Component {
         }
         this.revertSeenNodesToGreen(grid);
         this.startTransition();
-        return countNumIslands;
     }
 
     onPlayPause = () => {
         this.setState({
-          animating: true
+          animating: true,
+          resetOnRestart: false
         })
         if (this.props.method === "DFS") {
             this.numIslandsDFS();
@@ -297,12 +310,29 @@ class Grid extends React.Component {
 
     onReset = () => {
         this.transitionQueue = []
-        console.log(this.resetState);
+        // console.log(this.resetState);
         this.setState({animating: false});
         clearInterval(this.transitionInterval);
-        this.setState({boxRows:  this.resetState});
+        this.setState({componentCount: 0});
+
+        if (this.state.resetOnRestart === true) {
+            // call the init method
+            this.setState({boxRows: this.initBoxRows()});
+        }
+        else {
+            // just reset to their input
+            this.setState({boxRows:  this.resetState});
+        }
+        
     }
 
+    getVisibilityResetButton() {
+        var ret = !this.state.animating;
+        if (this.state.resetOnRestart) {
+            ret = !ret;
+        }
+        return ret;
+    }
     render () {
         return (
         <div key='grid' > 
@@ -322,6 +352,9 @@ class Grid extends React.Component {
                 onClick = {this.onReset}
                 visible={!this.state.animating}
             />
+            <div className='component-count'>
+                <h2>Component Count = {this.state.componentCount}</h2>
+            </div>
         </div>
         );
 

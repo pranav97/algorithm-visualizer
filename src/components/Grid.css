@@ -1,0 +1,16 @@
+.component-count {
+    background-color: #D3D5D7;
+    padding: 10px;
+}
+
+table {
+    /* background-color: greenyellow; */
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+
+}
+
+.grid {
+    display: block;
+}

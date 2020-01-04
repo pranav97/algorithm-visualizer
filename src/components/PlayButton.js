@@ -1,5 +1,5 @@
 import React from 'react';
-import './PlayButton';
+import './PlayButton.css';
 
 class PlayButton extends React.Component {
     getIconState = () => {
@@ -24,7 +24,6 @@ class PlayButton extends React.Component {
         return (
             <div 
                 onClick={this.onClick}
-
                 className='play-button' style={{ visibility: this.getStyle()}}>
                 <button className="ui labeled icon button">
                     <i 
