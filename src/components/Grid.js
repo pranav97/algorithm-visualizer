@@ -4,8 +4,10 @@ import PlayButton from './PlayButton';
 import * as islands from './numIslandsComponent.js';
 // import ResetButton from './ResetButton';
 import './Grid.css';
+import UnionFind from './UnionFind';
 
 class Grid extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -29,10 +31,12 @@ class Grid extends React.Component {
         this.transitionQueue = [];
         
     }
+
     componentDidMount() {
         // this.initBoxRows();
         this.startTransition();        
     }
+
     initBoxRows = () => {
         var rows = []
         for (var j = 0; j < this.props.maxRow; j++) { 
@@ -49,6 +53,7 @@ class Grid extends React.Component {
         }
         return rows;
     }
+
     onMouseDown = (rowCol) => {
         this.setState({mouseDownLocation : rowCol});
     }
@@ -130,9 +135,10 @@ class Grid extends React.Component {
             var rows = this.state.boxRows;
             var change = this.transitionQueue.shift();
             if ('count' in change) {
-                this.setState({componentCount: this.state.componentCount + 1});
+                this.setState({componentCount: this.state.componentCount + change.count});
             }
             else {
+                // console.log(change);
                 rows[change.row][change.col].backgroundColor =  change.backgroundColor;
                 this.setState({boxRows: rows});
             }
@@ -142,6 +148,16 @@ class Grid extends React.Component {
             this.setState({resetOnRestart : true});
             this.setState({animating: false});
             clearInterval(this.transitionInterval);
+        }
+    }
+
+    revertSeenNodesToGreen(grid) {
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) { 
+                if (grid[i][j].backgroundColor !== "blue") {
+                    grid[i][j].backgroundColor = "green";
+                }
+            }
         }
     }
 
@@ -206,16 +222,6 @@ class Grid extends React.Component {
         this.dfsHelper(grid, u);
         this.dfsHelper(grid, d);
     }
-
-    revertSeenNodesToGreen(grid) {
-        for(var i = 0; i < grid.length; i++) {
-            for(var j = 0; j < grid[i].length; j++) { 
-                if (grid[i][j].backgroundColor === this.colorCodes.seen) {
-                    grid[i][j].backgroundColor = "green";
-                }
-            }
-        }
-    }
     
     numIslandsBFS = () => {
         // var grid = Object.assign({}, this.state.boxRows); // copy of the object 
@@ -267,6 +273,37 @@ class Grid extends React.Component {
         this.startTransition();
     }
 
+    numIslandsUnionFind() {
+        this.setState({componentCount: 0});
+        var grid = this.state.boxRows;
+        var uf = new UnionFind(grid);
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) {
+                if (grid[i][j].backgroundColor !== "blue") {
+                    var l = islands.left(grid, [i, j]);
+                    var r = islands.right(grid, [i, j]);
+                    var u = islands.up(grid, [i, j]);
+                    var d = islands.down(grid, [i, j]);
+                    if (l && grid[l[0]][l[1]].backgroundColor !== "blue") {
+                        uf.unify(i, j, l[0], l[1]);
+                    }
+                    if (r && grid[r[0]][r[1]].backgroundColor !== "blue") {
+                        uf.unify(i, j, r[0], r[1]);
+                    }
+                    if (u && grid[u[0]][u[1]].backgroundColor !== "blue") {
+                        uf.unify(i, j, u[0], u[1]);
+                    }
+                    if (d && grid[d[0]][d[1]].backgroundColor !== "blue") {
+                        uf.unify(i, j, d[0], d[1]);
+                    }
+                }
+            }
+        }
+        this.revertSeenNodesToGreen(grid);
+        this.transitionQueue = [...uf.getTransitionQueue()];
+        this.startTransition()
+    }
+
     onPlayPause = () => {
         this.setState({
           animating: true,
@@ -278,9 +315,9 @@ class Grid extends React.Component {
         else if (this.props.method === "BFS") {
             this.numIslandsBFS();
         }
-        // else if (this.props.method === "Union Find") {
-        //     this.numIslandsUnionFind();
-        // }
+        else if (this.props.method === "Union Find") {
+            this.numIslandsUnionFind();
+        }
     }
 
     renderRows = () => {
@@ -333,6 +370,7 @@ class Grid extends React.Component {
         }
         return ret;
     }
+
     render () {
         return (
         <div key='grid' > 

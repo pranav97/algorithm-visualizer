@@ -24,11 +24,19 @@ class Box extends React.Component {
             }
         );
     }
+    getColor() {
+        if (this.props.backgroundColor in this.colorHashes) {
+            return this.colorHashes[this.props.backgroundColor];
+        }
+        else {
+            return this.props.backgroundColor; 
+        }
+    }
     render() {
       return (
         <div 
             style={{
-                backgroundColor: this.colorHashes[this.props.backgroundColor]
+                backgroundColor: this.getColor()
             }}
             className="box" 
             // onClick={this.onClick}

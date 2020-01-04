@@ -18,7 +18,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.height);
+    // console.log(this.state.height);
     // Additionally I could have just used an arrow function for the binding `this` to the component...
     window.addEventListener("resize", this.updateDimensions);
   }
