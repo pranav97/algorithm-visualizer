@@ -118,7 +118,7 @@ class Grid extends React.Component {
         clearInterval(this.transitionInterval);
         this.setState({animating: true});
         this.resetState = this.copy(this.state.boxRows);
-        this.transitionInterval = setInterval(this.doChange, (this.props.speed * 100));
+        this.transitionInterval = setInterval(this.doChange, ((this.props.speed + 1) * 100));
         this.setState({
             currentSpeed : this.props.speed
         })
