@@ -18,7 +18,7 @@ class SpeedSlider extends React.Component {
     render() {
         return (
             <div className='speed-slider'>
-                <label className="label-delay">Delay: 0ms  </label>
+                <label className="label-delay">Delay: 100ms  </label>
                 <input
                     className='speed-input'
                     onChange={this.handleChange} 
