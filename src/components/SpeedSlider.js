@@ -29,7 +29,7 @@ class SpeedSlider extends React.Component {
                     step="1"
                 />
                 <label className="label-delay">  500ms</label>
-                <Help/>
+                <Help helpText="Move the slider to the right to get slower animations. " />
             </div>
         );
 

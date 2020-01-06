@@ -18,7 +18,9 @@
 
 .help {
     width: 30px;
+    padding-left: 20px;
 }
+
 label.label-delay {
     margin-right: 10px;
     margin-left:10px;

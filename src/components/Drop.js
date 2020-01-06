@@ -1,5 +1,6 @@
 import React from 'react';
 import './Drop.css';
+import Help from './Help';
 class Drop extends React.Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ class Drop extends React.Component {
                     <option value="BFS">BFS</option>
                     <option value="Union Find">Union Find</option>
                 </select>
+                <Help helpText="Select one of the methods to see animations for how that algorithm works. "/>
             </div>
         )
     }

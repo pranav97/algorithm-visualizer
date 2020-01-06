@@ -24,6 +24,11 @@ class Help extends React.Component {
         ret = 'visible'
       return ret;
   }
+  getHelpText() {
+    return (
+      <p> {this.props.helpText} </p>
+    );
+  }
 
   render() {
     return  (
@@ -36,9 +41,7 @@ class Help extends React.Component {
         <div className="delay-help" 
           style={{visibility: this.tooltopStyle()}}
           >
-          <p>
-          Move the slider to the right to get slower animations. 
-          </p>
+          {this.getHelpText()}
         </div>
       </div>
     );

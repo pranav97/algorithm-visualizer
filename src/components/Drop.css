@@ -1,4 +1,8 @@
 .dropdown-button {
+    width: 280px;
+}
+
+.drop-container {
     width: 100%;
     height: 60px;
     padding: 10px;
@@ -7,5 +11,4 @@
     display: flex;
     margin-top: 100px;
     flex-direction: row;
-    color: black;
 }
