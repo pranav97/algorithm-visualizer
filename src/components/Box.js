@@ -2,6 +2,11 @@ import React from 'react';
 import './Box.css';
 
 class Box extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {hovering: false};
+    }
     colorHashes = {
         'blue': "#A2BCE0",
         'green': "#0B5563",
@@ -32,13 +37,32 @@ class Box extends React.Component {
             return this.props.backgroundColor; 
         }
     }
+
+    onMouseEnter = () => {
+        this.setState({hovering: true});
+    }
+
+    onMouseLeave = () => {
+        this.setState({hovering: false});
+    }
+
+    getPointer = () => {
+        if (this.state.hovering) {
+            return "cell";
+        }
+        return "default";
+    }
+    
     render() {
       return (
         <div 
             style={{
-                backgroundColor: this.getColor()
+                backgroundColor: this.getColor(),
+                cursor: this.getPointer()
             }}
             className="box" 
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
             // onClick={this.onClick}
             onMouseDown={this.onMouseDown}
             onMouseUp={this.onMouseUp}
