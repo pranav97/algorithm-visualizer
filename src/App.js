@@ -42,7 +42,7 @@ class App extends React.Component {
 
   getSidebarIconVisibility(){
     var ret = "visible";
-    if (this.state.width > 700 ) {
+    if (this.state.width > 750 ) {
       ret = "hidden";
     }
     return ret;
@@ -50,7 +50,7 @@ class App extends React.Component {
 
   getSidebarClass() {
     var ret = "ui right wide sidebar overlay";
-    if (this.state.width > 700 ) {
+    if (this.state.width > 750 ) {
       ret += " visible";
     }
     else {
@@ -82,11 +82,24 @@ class App extends React.Component {
   }
 
   getChevronVisibility() {
-    if (this.state.width > 700 ) {
+    if (this.state.width > 750 ) {
       return "hidden";
     }
     return "visible";
   }
+
+  // getInstructionsWidth() {
+  //   if (this.state.width > 750 ) {
+  //     console.log(parseInt(this.state.width) - 380 + 'px' );
+
+  //     return parseInt(this.state.width) - 380 + 'px' ;
+  //   }
+  //   else {
+  //     console.log(100 + "%");
+  //     return 100 + "%";
+  //   }
+
+  // }
   render() {
     return (
       <div className="App">
@@ -97,7 +110,7 @@ class App extends React.Component {
             <h3 className="item"> Algorithm Visualizer</h3>
             <div 
               className="item" 
-              style={{visibility: this.getSidebarIconVisibility()}}
+              style={{width: this.getSidebarIconVisibility}}
               onClick={this.onClick}
               >
               <i 
@@ -109,29 +122,38 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-        <div className={this.getSidebarClass()}>
-          <div
-            className="item chevron"
-            onClick={this.hideSidebar}
-            // style={{marginTop: '30px'}}
-            style={{ visibility: this.getChevronVisibility()}}
-          >
-            <i className="chevron right icon"></i>
+        <div className = "content">
+          <div className={this.getSidebarClass()}>
+            <div
+              className="item chevron"
+              onClick={this.hideSidebar}
+              style={{ visibility: this.getChevronVisibility()}}
+            >
+              <i className="chevron right icon"></i>
+            </div>
+            <SpeedSlider
+              defaultValue={this.state.speed} 
+              updateSpeed={this.updateSpeed} />
+            <Drop 
+              methodChanged={this.methodChanged}
+            />
           </div>
-          <SpeedSlider
-            defaultValue={this.state.speed} 
-            updateSpeed={this.updateSpeed} />
-          <Drop 
-            methodChanged={this.methodChanged}
-          />
-        </div>
-        <div className="dimmed pusher">
-          <div className="viz">
-          <Grid 
-              method={this.state.method}
-              maxRow="30" 
-              maxCol="20" 
-              speed={this.state.speed}/>
+          <div className="dimmed pusher">
+            <div className="instructions">
+            <h2>Instructions on using simulation: </h2>
+            <p>1) Click and drag to create an island. </p>
+            <p>2) In the dropdown for method in the navbar on the right hand side, choose the one you want to see. </p>
+            <p>3) Click start</p>
+            <p>4) Adjust delay to speed up as needed. </p>
+            <p>5) Look out for output - Island Count below the grid. </p>
+            </div>
+            <div className="viz">
+            <Grid 
+                method={this.state.method}
+                maxRow="30" 
+                maxCol="20" 
+                speed={this.state.speed}/>
+            </div>
           </div>
         </div>
       </div>
