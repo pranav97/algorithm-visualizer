@@ -81,6 +81,12 @@ class App extends React.Component {
     });
   }
 
+  getChevronVisibility() {
+    if (this.state.width > 700 ) {
+      return "hidden";
+    }
+    return "visible";
+  }
   render() {
     return (
       <div className="App">
@@ -108,6 +114,7 @@ class App extends React.Component {
             className="item chevron"
             onClick={this.hideSidebar}
             // style={{marginTop: '30px'}}
+            style={{ visibility: this.getChevronVisibility()}}
           >
             <i className="chevron right icon"></i>
           </div>
