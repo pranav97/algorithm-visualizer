@@ -107,7 +107,7 @@ class App extends React.Component {
           <div 
             key="sidebar"
             className="ui top attached demo menu">
-            <h3 className="item"> Algorithm Visualizer</h3>
+            <h3 className="item">Algorithm Visualizer</h3>
             <div 
               className="item" 
                 style={
@@ -138,13 +138,32 @@ class App extends React.Component {
             />
           </div>
           <div className="dimmed pusher">
+            <div>
+              <h2>Problem: </h2>
+              <p>Count the number of islands in the sea. Initially the entire grid consists only of water. Go ahead and add some land to watch the algorithm count the number of islands.  </p>
+              <p>
+                There  are 3 different methods that are showcased here, click here to read more about the methods. 
+              </p>
+            </div> <br/>
             <div className="instructions">
             <h2>Instructions on using simulation: </h2>
-            <p>1) Click and drag to create an island. </p>
-            <p>2) In the dropdown for method in the navbar on the right hand side, choose the one you want to see. </p>
-            <p>3) Click start</p>
-            <p>4) Adjust delay to speed up as needed. </p>
-            <p>5) Look out for output - Island Count below the grid. </p>
+            <ol>
+              <li>
+                <p>Click and drag to create an island. </p>
+              </li>
+              <li>
+                <p>In the dropdown for method in the navbar on the right hand side, choose the one you want to see. </p>
+              </li>
+              <li>
+                <p>Click start</p>
+              </li>
+              <li>
+                <p>Adjust delay to speed up as needed. </p>
+              </li>
+              <li>
+                <p>Look out for output - Island Count below the grid. </p>
+              </li>
+            </ol>
             </div>
             <div className="viz">
             <Grid 

@@ -28,7 +28,7 @@ class SpeedSlider extends React.Component {
                     defaultValue = {this.state.value}
                     step="1"
                 />
-                <label className="label-delay">  500ms</label>
+                <label className="label-delay">  600ms</label>
                 <Help helpText="Move the slider to the right to get slower animations. " />
             </div>
         );
