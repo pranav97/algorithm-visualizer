@@ -110,14 +110,13 @@ class App extends React.Component {
             <h3 className="item"> Algorithm Visualizer</h3>
             <div 
               className="item" 
-              style={{width: this.getSidebarIconVisibility}}
+                style={
+                    {visibility: this.getSidebarIconVisibility()}
+                }
               onClick={this.onClick}
               >
               <i 
                 className="sidebar icon" 
-                style={
-                    {visibility: this.getSidebarIconVisibility()}
-                }
               ></i>
             </div>
           </div>
