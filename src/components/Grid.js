@@ -213,6 +213,13 @@ class Grid extends React.Component {
     }
 
     dfs(grid, startRow, startCol) {
+        grid[startRow][startCol].backgroundColor = this.colorCodes.seen;
+        this.transitionQueue.push({
+            row: startRow,
+            col: startCol, 
+            backgroundColor: this.colorCodes.seen
+        })
+
         var r = islands.right(grid, [startRow, startCol]);
         var l = islands.left(grid, [startRow, startCol])
         var u = islands.up(grid, [startRow, startCol]);
