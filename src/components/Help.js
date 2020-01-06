@@ -33,7 +33,9 @@ class Help extends React.Component {
         <i key = "question-mark"
           className="question circle icon" >
         </i>
-        <div className="delay-help" style={{visibility: this.tooltopStyle()}}>
+        <div className="delay-help" 
+          style={{visibility: this.tooltopStyle()}}
+          >
           <p>
           Move the slider to the right to get slower animations. 
           </p>

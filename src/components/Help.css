@@ -1,11 +1,12 @@
 .delay-help {
-    width: 160px;
+    width: 300px;
     height: 200px;
-    background-color: '#DBE4EE';
     position: relative;
-    right: 100px;
-    top: 100px;
+    right: 280px;
+    top: 19px;
     background-color: burlywood;
+    opacity: 0.7;
+    z-index: 2;
 }
 
 

@@ -96,7 +96,9 @@ class App extends React.Component {
               >
               <i 
                 className="sidebar icon" 
-                style={{visibility: this.getSidebarIconVisibility()}}
+                style={
+                    {visibility: this.getSidebarIconVisibility()}
+                }
               ></i>
             </div>
           </div>
