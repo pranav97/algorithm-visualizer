@@ -140,7 +140,7 @@ class App extends React.Component {
           <div className="dimmed pusher">
             <div>
               <h2>Problem: </h2>
-              <p>Count the number of islands in the sea. Initially the entire grid consists only of water. Go ahead and add some land to watch the algorithm count the number of islands.  </p>
+              <p>Count the number of islands in the sea. Initially the entire grid consists only of water. Go ahead and add drag or click across the grid below to create a landmass. On mobile you have tap since this grid uses mouse based events. After that you can see how the 3 methods work in solving the problem.  </p>
               <p>
                 There  are 3 different methods that are showcased here, click here to read more about the methods. 
               </p>
